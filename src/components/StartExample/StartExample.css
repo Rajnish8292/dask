@@ -1,0 +1,42 @@
+.example_container {
+    height: 100vh;
+    width: 100vw;
+    background: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 98;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 60px;
+}
+.example {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: var(--font-size-small);
+    font-weight: bold;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 10px 0;
+    display: inline-block;
+}
+.example:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: var(--color-shade4);
+}
+.example_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction:column ;
+}
+.back_button {
+  background-color: var(--color-shade5);
+  color: var(--color-shade4);
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-block;
+}
