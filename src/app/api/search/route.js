@@ -100,6 +100,55 @@ async function searchForQuery({ filter, query }) {
   }
 }
 
+
+// async function searchForQuery({ filter, query }) {
+//   const TOTAL_HIT = 50;
+//   const client = algoliasearch(
+//     process.env.ALGOLIA_APPLICATION_ID,
+//     process.env.ALGOLIA_API_KEY
+//   );
+
+//   const index = client.initIndex("problems_data");
+
+//   // Construct facetFilters
+//   const facetFilters = [];
+
+//   for (const [key, values] of Object.entries(filter)) {
+//     if (Array.isArray(values) && values.length > 0) {
+//       // OR within the same facet (e.g., difficulty:easy OR difficulty:medium)
+//       facetFilters.push(values.map((v) => `${key}:${v}`));
+//     }
+//   }
+
+//   try {
+//     let hits = [];
+
+//     // Send primary search request with filters (if any)
+//     const { hits: initialHits } = await index.search(query, {
+//       hitsPerPage: TOTAL_HIT,
+//       ...(facetFilters.length > 0 && { facetFilters }),
+//     });
+
+//     hits = initialHits;
+
+//     // 🔁 If no hits and filters were applied, fallback with no filters
+//     if (hits.length === 0 && facetFilters.length > 0) {
+//       const { hits: fallbackHits } = await index.search(query, {
+//         hitsPerPage: TOTAL_HIT,
+//       });
+//       hits = fallbackHits;
+//     }
+
+//     return shuffleArray(hits); // optional randomization
+//   } catch (err) {
+//     console.error("Algolia error:", err);
+//     return false;
+//   }
+// }
+
+
+
+
 export async function POST(request) {
   let status = 200;
   const body = await request.json();
@@ -113,16 +162,16 @@ export async function POST(request) {
   let assumptionValidation = assumption_validate(query[0], facets);
   console.log({ assumptionValidation });
   // // send api request to algolia for the query
-  // let searchResult = await searchForQuery({
-  //   filter: assumptionValidation,
-  //   query: query[0],
-  // });
+  let searchResult = await searchForQuery({
+    filter: assumptionValidation,
+    query: query[0],
+  });
 
   // if (!geminiResponse[0] || !searchResult) status = 500;
 
   // // remove the description from the result to reduce the size of data that will be send to user
   // searchResult = searchResult.map(({ description, ...result }) => result);
-  // console.log(searchResult.length);
-  // console.log(searchResult.splice(0, 5));
+  console.log(searchResult.length);
+  console.log(searchResult.splice(0, 5));
   return NextResponse.json({ assumptionValidation });
 }
