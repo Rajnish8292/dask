@@ -1,17 +1,8 @@
 import { NextResponse } from "next/server";
 import { algoliasearch } from "algoliasearch";
-import { InferenceClient } from "@huggingface/inference";
 import { GoogleGenAI } from "@google/genai";
-import type_validate from "@/app/lib/typeValidation.mjs";
 import assumption_validate from "@/app/lib/assumptionValidation.mjs";
-
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]]; // swap
-  }
-  return array;
-}
+import createRequests from "@/app/lib/createRequest.mjs";
 
 async function geminiResponseToQuery({ query }) {
   const client = new GoogleGenAI(process.env.GOOGLE_API_KEY);
@@ -47,7 +38,9 @@ Query: "${query}"  `;
 
 async function searchForQuery({ filter, query }) {
   const TOTAL_HIT = 50;
-  let TOTAL_FACETS = 0;
+  let TOTAL_REQUEST = 1;
+  let facet_filters = [];
+  let facets = [];
   const client = algoliasearch(
     process.env.ALGOLIA_APPLICATION_ID,
     process.env.ALGOLIA_API_KEY
@@ -55,29 +48,30 @@ async function searchForQuery({ filter, query }) {
 
   // check no. of facets with filters
   for (const [key, value] of Object.entries(filter)) {
-    if (value.length > 0) TOTAL_FACETS++;
+    if (value.length > 0) {
+      facets.push(key);
+      facet_filters.push(value.map((e) => `${key}:${e}`));
+      TOTAL_REQUEST *= value.length;
+    }
   }
 
   let requests = [];
   let hits = [];
 
-  for (const [key, value] of Object.entries(filter)) {
-    if (value.length > 0) {
-      value.forEach((f) => {
-        requests.push({
-          indexName: "problems_data",
-          query: "",
-          facets: [key],
-          facetFilters: [[`${key}:${f}`]],
-          hitsPerPage: Math.round(
-            TOTAL_HIT / TOTAL_FACETS / filter[key].length
-          ),
-        });
-      });
-    }
-  }
+  /* create all the combination of facet filter recu */
+  createRequests(facet_filters, [], 0, requests);
+  requests = requests.map((e) => {
+    return {
+      indexName: "problems_data",
+      query: "",
+      facets: facets,
+      facetFilters: e,
+      hitsPerPage: Math.round(TOTAL_HIT / TOTAL_REQUEST),
+    };
+  });
 
-  if (!requests.length) {
+  if (requests[0].facets.length == 0) {
+    requests = [];
     requests.push({
       indexName: "problems_data",
       query: query,
@@ -89,11 +83,12 @@ async function searchForQuery({ filter, query }) {
     const { results } = await client.search({
       requests: requests,
     });
-
+    console.log({ results });
     results.forEach((result) => {
       hits.push(...result.hits);
     });
-    return [...new Set(shuffleArray(hits))];
+
+    return hits;
   } catch (err) {
     console.log(err);
     return false;
@@ -111,18 +106,19 @@ export async function POST(request) {
 
   // validate the response from gemini
   let assumptionValidation = assumption_validate(query[0], facets);
-  console.log({ assumptionValidation });
+
   // // send api request to algolia for the query
-  // let searchResult = await searchForQuery({
-  //   filter: assumptionValidation,
-  //   query: query[0],
-  // });
+  let searchResult = await searchForQuery({
+    filter: assumptionValidation,
+    query: query[0],
+  });
 
-  // if (!geminiResponse[0] || !searchResult) status = 500;
+  if (!geminiResponse[0] || !searchResult) status = 500;
 
-  // // remove the description from the result to reduce the size of data that will be send to user
-  // searchResult = searchResult.map(({ description, ...result }) => result);
-  // console.log(searchResult.length);
-  // console.log(searchResult.splice(0, 5));
-  return NextResponse.json({ assumptionValidation });
+  // remove the description from the result to reduce the size of data that will be send to user
+  searchResult = searchResult.map(
+    ({ description, _highlightResult, ...result }) => result
+  );
+
+  return NextResponse.json({ result: searchResult, status: 200 });
 }
