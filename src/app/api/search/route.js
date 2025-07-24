@@ -120,5 +120,9 @@ export async function POST(request) {
     ({ description, _highlightResult, ...result }) => result
   );
 
-  return NextResponse.json({ result: searchResult, status: 200 });
+  return NextResponse.json({
+    result: searchResult,
+    facets: assumptionValidation,
+    status: 200,
+  });
 }

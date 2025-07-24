@@ -1,0 +1,35 @@
+
+.search_suspense {
+  margin-top: 50px;
+  
+}
+
+.search_count_suspense {
+  height: calc(var(--font-size-large) * 1.5);
+  width: calc(17 * var(--font-size-large));
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  animation: suspense 1s infinite;
+  animation-delay: 0.5s;
+}
+
+.result_suspense {
+  height: 150px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  margin-top: 50px;
+  animation: suspense 1s infinite;
+}
+
+@keyframes suspense {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}

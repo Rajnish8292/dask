@@ -1,10 +1,12 @@
 "use client";
 import IntroductionPage from "@/components/page/IntroductionPage/IntroductionPage";
-import { IoSend } from "react-icons/io5";
+import SearchPage from "@/components/page/SearchPage/SearchPage";
+
 export default function Home() {
   return (
     <>
-      <IntroductionPage />
+      {/* <IntroductionPage /> */}
+      <SearchPage />
     </>
   );
 }

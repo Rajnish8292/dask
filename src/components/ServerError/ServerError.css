@@ -1,0 +1,23 @@
+
+.server_error {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+
+.try_again {
+  background-color: var(--color-shade5);
+  color: var(--color-shade1);
+  padding: 10px 25px;
+  cursor: pointer;
+  border-radius: 5px;
+  display: inline-block;
+  user-select: none;
+  
+}
+.try_again:active {
+  opacity: 0.5;
+}
