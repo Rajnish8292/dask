@@ -10,12 +10,15 @@
   },
   "dependencies": {
     "@google/genai": "^1.9.0",
+    "@gsap/react": "^2.1.2",
     "@huggingface/inference": "^4.5.1",
     "algoliasearch": "^5.32.0",
+    "gsap": "^3.13.0",
     "next": "15.3.5",
     "openai": "^5.9.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-icons": "^5.5.0"
+    "react-icons": "^5.5.0",
+    "recoil": "^0.7.7"
   }
 }

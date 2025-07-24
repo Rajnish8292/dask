@@ -5,11 +5,11 @@
   --color-shade4: #A7D9AE;
   --color-shade5: #0D0D0D;
   /* Base responsive font sizes using clamp() for fluid scaling */
-  --font-size-small: clamp(0.75rem, 0.5rem + 0.5vw, 1rem);        /* 12px - 16px */
-  --font-size-regular: clamp(0.875rem, 0.75rem + 0.5vw, 1.125rem); /* 14px - 18px */
-  --font-size-large: clamp(1rem, 0.875rem + 0.625vw, 1.375rem);    /* 16px - 22px */
-  --font-size-giant: clamp(1.5rem, 1.25rem + 1.25vw, 2.5rem);      /* 24px - 40px */
-  --font-size-veryLarge: clamp(2rem, 1.5rem + 2.5vw, 4rem);        /* 32px - 64px */
+  --font-size-small: clamp(0.625rem, 0.4rem + 0.4vw, 0.875rem);       /* 10px - 14px */
+  --font-size-regular: clamp(0.75rem, 0.5rem + 0.5vw, 1rem);          /* 12px - 16px */
+  --font-size-large: clamp(0.875rem, 0.625rem + 0.5vw, 1.25rem);      /* 14px - 20px */
+  --font-size-giant: clamp(1.125rem, 0.875rem + 1vw, 1.875rem);       /* 18px - 30px */
+  --font-size-veryLarge: clamp(1.5rem, 1rem + 2vw, 3rem);             /* 24px - 48px */
 }
 
 @font-face {
@@ -84,6 +84,7 @@ body {
 }
 .facet_wrapper {
   padding: 30px 50px;
+  display: none;
 }
 .facets_container {
   margin-top: 30px;
@@ -132,7 +133,7 @@ body {
   /* background-color: red; */
   .answer {
     width: 22vw;
-    height: 15vw;
+    height: 10vw;
     border-radius: 5px;
     margin: 20px;
     padding: 20px;
@@ -217,3 +218,28 @@ body {
   background-color: red;
 }
 
+.search_result {
+  margin-top: 50px;
+}
+
+
+.search_found_text {
+  font-size: var(--font-size-large);
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.easy {
+    background-color: rgba(0, 255, 0, 0.2);
+    color: darkgreen
+}
+
+.medium {
+    background-color: rgba(0, 0, 255, 0.2);
+    color: rgba(0, 0, 255);
+}
+
+.hard {
+    background-color: rgba(255, 0, 0, 0.2);
+    color: darkred;
+}

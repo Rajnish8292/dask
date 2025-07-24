@@ -1,11 +1,24 @@
 import "./StartExample.css";
 import GlitchLoadText from "../GlitchLoadText/GlitchLoadText";
-export default function StartExample({ clickHandler }) {
+export default function StartExample({
+  clickHandler,
+  setExampleHandler,
+  goToSearch,
+}) {
   return (
     <>
       <div className="example_container">
         <div className="example_wrapper">
-          <div className="example">
+          <div
+            className="example"
+            onClick={() => {
+              setExampleHandler({
+                example:
+                  "Tomorrow is my interview at Google, search for beginner to intermediate problems based on array",
+              });
+              goToSearch();
+            }}
+          >
             <GlitchLoadText
               text={
                 "Tomorrow is my interview at Google, search for beginner to intermediate problems based on array"
@@ -17,7 +30,16 @@ export default function StartExample({ clickHandler }) {
               coefficient={0.9}
             />
           </div>
-          <div className="example">
+          <div
+            className="example"
+            onClick={() => {
+              setExampleHandler({
+                example:
+                  "find me easy to medium string manipulation problems that are commonly asked",
+              });
+              goToSearch();
+            }}
+          >
             <GlitchLoadText
               text={
                 "find me easy to medium string manipulation problems that are commonly asked"
@@ -29,7 +51,16 @@ export default function StartExample({ clickHandler }) {
               coefficient={0.9}
             />
           </div>
-          <div className="example">
+          <div
+            className="example"
+            onClick={() => {
+              setExampleHandler({
+                example:
+                  " Got a Netflix interview coming up, search for entry to mid-level dynamic programming questions",
+              });
+              goToSearch();
+            }}
+          >
             <GlitchLoadText
               text={
                 " Got a Netflix interview coming up, search for entry to mid-level dynamic programming questions"
@@ -41,7 +72,16 @@ export default function StartExample({ clickHandler }) {
               coefficient={0}
             />
           </div>
-          <div className="example">
+          <div
+            className="example"
+            onClick={() => {
+              setExampleHandler({
+                example:
+                  "Senior developer interview, need advanced tree and graph algorithm problems",
+              });
+              goToSearch();
+            }}
+          >
             <GlitchLoadText
               text={
                 "Senior developer interview, need advanced tree and graph algorithm problems"
