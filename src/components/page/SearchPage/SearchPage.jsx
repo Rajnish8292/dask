@@ -106,6 +106,7 @@ export default function SearchPage({ example }) {
       </div>
 
       {isSearching && <ResultSuspense />}
+      {status != 200 && <ServerError />}
       {!isSearching && status == 200 && "result" in result && (
         <>
           <div className="search_result">
