@@ -6,7 +6,12 @@ export default function Result({ title, difficulty, companies, topics, url }) {
       <div
         className="result"
         onClick={() => {
-          window.open(url, "_blank");
+          window.open(
+            url
+              ? url
+              : `https://leetcode.com/problems/${title.split(" ").join("-")}`,
+            "_blank"
+          );
         }}
       >
         <div

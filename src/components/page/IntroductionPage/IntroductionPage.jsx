@@ -2,7 +2,7 @@ import GlitchLoadText from "@/components/GlitchLoadText/GlitchLoadText";
 import StartExample from "@/components/StartExample/StartExample";
 import React, { useState } from "react";
 
-export default function IntroductionPage() {
+export default function IntroductionPage({ setExampleHandler, goToSearch }) {
   const description1 =
     "There are almost 3K DSA problems across multiple topics, pattern and asked frequently in interviews.";
   const description2 =
@@ -15,7 +15,13 @@ export default function IntroductionPage() {
   };
   return (
     <>
-      {isExampleVisible && <StartExample clickHandler={clickHandler} />}
+      {isExampleVisible && (
+        <StartExample
+          clickHandler={clickHandler}
+          setExampleHandler={setExampleHandler}
+          goToSearch={goToSearch}
+        />
+      )}
       <div
         style={{
           display: "flex",
@@ -115,13 +121,20 @@ export default function IntroductionPage() {
           </div>
         </div>
         <div className="button_container">
-          <div className="start_button">Let's start!</div>
           <div
+            className="start_button"
+            onClick={() => {
+              goToSearch();
+            }}
+          >
+            Let's start!
+          </div>
+          {/* <div
             className="start_eg_button"
             onClick={() => setExampleVisible(!isExampleVisible)}
           >
             Start with an example
-          </div>
+          </div> */}
         </div>
       </div>
     </>

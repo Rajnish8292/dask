@@ -2,15 +2,17 @@
 import Result from "@/components/Result/Result";
 import ResultSuspense from "@/components/ResultSuspense/ResultSuspense";
 import ServerError from "@/components/ServerError/ServerError";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 
-export default function SearchPage() {
+export default function SearchPage({ example }) {
   let [isSearching, setIsSearching] = useState(false);
   let [status, setStatus] = useState(200);
   let [result, setResult] = useState({});
   let [noOfFacets, setNoOfFacets] = useState();
   let [query, setQuery] = useState("");
+  let inputRef = useRef();
+  let btnRef = useRef();
 
   let searchRequest = async ({ query }) => {
     if (query.length == 0) return;
@@ -44,12 +46,14 @@ export default function SearchPage() {
       <div className="search_box_container">
         <div className="search_wrapper">
           <input
+            ref={inputRef}
             placeholder="Search the way you like :)"
             onChange={(e) => {
               setQuery(e.target.value);
             }}
           />
           <div
+            ref={btnRef}
             className="send_button"
             onClick={() => {
               searchRequest({
