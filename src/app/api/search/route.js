@@ -4,6 +4,20 @@ import { GoogleGenAI } from "@google/genai";
 import assumption_validate from "@/app/lib/assumptionValidation.mjs";
 import createRequests from "@/app/lib/createRequest.mjs";
 
+/*
+  geminiResponseToQuery({query}) -> function to get the response from gemini api for the query
+  input_format - >
+    query -> string
+    e.g. "find me a easy array problem from google"
+
+  output_format - > array of 4 arrays [difficulty[], topics[], companies[], query[]]
+
+  working ->
+    send api request to gemini api with the prompt to extract difficulty, topics, companies and correct the query
+    split the response by new line and then split each line by comma to get the array of difficulty, topics, companies and query
+    return the array of 4 arrays [difficulty[], topics[], companies[], query[]]
+*/
+
 async function geminiResponseToQuery({ query }) {
   const client = new GoogleGenAI(process.env.GOOGLE_API_KEY);
   const prompt = `Extract and return only the following in exactly 4 lines:  
@@ -36,6 +50,26 @@ Query: "${query}"  `;
   });
 }
 
+/*
+  searchForQuery({filter, query}) -> function to get the search result from algolia for the query with filters
+  input_format - >
+    filter -> object of arrays with keys difficulty, topics, companies
+    e.g.  {
+            difficulty: ["Easy", "Medium"],
+            topics: ["Array", "String"],
+            companies: ["Google", "Amazon"]
+          }
+
+    query -> string
+    e.g. "find me a easy array problem from google"
+
+  output_format - > array of search results from algolia
+  working ->
+    create algolia client with application id and api key from environment variables
+    create all the combination of facet filters from the filter object
+    send api request to algolia with the query and facet filters
+    return the array of search results from algolia
+*/
 async function searchForQuery({ filter, query }) {
   const TOTAL_HIT = 50;
   let TOTAL_REQUEST = 1;
@@ -46,7 +80,7 @@ async function searchForQuery({ filter, query }) {
     process.env.ALGOLIA_API_KEY
   );
 
-  // check no. of facets with filters
+  /* check no. of facets with filters */
   for (const [key, value] of Object.entries(filter)) {
     if (value.length > 0) {
       facets.push(key);
@@ -97,17 +131,25 @@ async function searchForQuery({ filter, query }) {
 
 export async function POST(request) {
   let status = 200;
+  if (!request) status = 400;
+  if (status == 400)
+    return NextResponse.json({
+      result: [],
+      facets: { difficulty: [], topics: [], companies: [] },
+      status: status,
+    });
+
   const body = await request.json();
   const q = body["query"];
 
-  // send api request to gemini for the query
+  /* send api request to gemini for the query */
   let geminiResponse = await geminiResponseToQuery({ query: q });
   let [facets, query] = [geminiResponse.slice(0, 3), geminiResponse[3]];
 
-  // validate the response from gemini
+  /*  validate the response from gemini */
   let assumptionValidation = assumption_validate(query[0], facets);
 
-  // // send api request to algolia for the query
+  /* send api request to algolia for the query */
   let searchResult = await searchForQuery({
     filter: assumptionValidation,
     query: query[0],

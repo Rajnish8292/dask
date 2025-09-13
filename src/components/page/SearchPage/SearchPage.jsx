@@ -1,20 +1,29 @@
 "use client";
-import Result from "@/components/Result/Result";
-import ResultSuspense from "@/components/ResultSuspense/ResultSuspense";
-import ServerError from "@/components/ServerError/ServerError";
+import Filters from "@/components/ui/Filters/Filters";
+import RecentSearch from "@/components/ui/RecentSearch/RecentSearch";
+import Result from "@/components/ui/Result/Result";
+import ResultSuspense from "@/components/ui/ResultSuspense/ResultSuspense";
+import SearchBox from "@/components/ui/SearchBox/SearchBox";
+import ServerError from "@/components/ui/ServerError/ServerError";
+import StartExample from "@/components/ui/StartExample/StartExample";
 import { useEffect, useRef, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 
 export default function SearchPage({ example }) {
-  let [isSearching, setIsSearching] = useState(false);
-  let [status, setStatus] = useState(200);
-  let [result, setResult] = useState({});
-  let [noOfFacets, setNoOfFacets] = useState();
-  let [query, setQuery] = useState("");
-  let inputRef = useRef();
-  let btnRef = useRef();
+  const [isSearching, setIsSearching] = useState(false);
+  const [status, setStatus] = useState(200);
+  const [result, setResult] = useState({});
+  const [noOfFacets, setNoOfFacets] = useState();
+  const [query, setQuery] = useState("");
 
-  let searchRequest = async ({ query }) => {
+  const [pasteTextFn, setPasteTextFn] = useState(() => () => {});
+
+  const startWithExampleHandler = ({ pasteText }) => {
+    console.log({ pasteText });
+    setPasteTextFn(() => pasteText);
+  };
+
+  const searchRequest = async ({ query }) => {
     if (query.length == 0) return;
     setIsSearching(true);
     try {
@@ -28,12 +37,12 @@ export default function SearchPage({ example }) {
       let result = await request.json();
       setStatus(200);
       setResult(result);
+      console.log({ result });
       setNoOfFacets(
         result.facets.companies.length +
           result.facets.topics.length +
           result.facets.difficulty.length
       );
-      console.log({ result });
     } catch (error) {
       setStatus(500);
     }
@@ -43,7 +52,7 @@ export default function SearchPage({ example }) {
 
   return (
     <>
-      <div className="search_box_container">
+      {/* <div className="search_box_container">
         <div className="search_wrapper">
           <input
             ref={inputRef}
@@ -61,7 +70,6 @@ export default function SearchPage({ example }) {
               });
             }}
           >
-            {/* <IoSend style={{ marginLeft: "5px" }} /> */}
             <CiSearch />
           </div>
         </div>
@@ -103,8 +111,14 @@ export default function SearchPage({ example }) {
             </div>
           </div>
         )}
-      </div>
-
+      </div> */}
+      <SearchBox startWithExampleHandler={startWithExampleHandler} />
+      {/* <RecentSearch /> */}
+      <Filters />
+      {typeof pasteTextFn == "function" && (
+        <StartExample pasteTextFn={pasteTextFn} />
+      )}
+      {/* <ServerError /> */}
       {isSearching && <ResultSuspense />}
       {status != 200 && <ServerError />}
       {!isSearching && status == 200 && "result" in result && (

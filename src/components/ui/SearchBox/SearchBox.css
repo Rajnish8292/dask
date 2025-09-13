@@ -1,0 +1,103 @@
+:root {
+    --caret-width:22px;
+    --caret-vertical-width: 10px;
+}
+
+.editiable_content_div {
+    width: auto;
+    height: 50px;
+    overflow: hidden;
+    background-color: var(--color-shade2);
+    font-size: var(--font-size-large);
+    outline: none;
+    font-family: 'Montserrat';
+    caret-color: transparent;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: var(--space-small) var(--space-very-large) var(--space-small) var(--space-medium);
+    border: var(--border-regular);
+    box-shadow: var(--box-shadow-regular);
+    font-family: "Courier New", monospace;
+    transition: 0.5s;
+}
+
+
+
+.editiable_content_div:focus {
+    transform: translate(-4px, -4px);
+    box-shadow: var(--box-shadow-large);
+}
+
+.div_placeholder {
+    position: absolute;
+    transform: translate(calc(var(--caret-vertical-width) + 10px), 0);
+    width: inherit;
+    opacity: 0.5;
+    user-select:none;
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+
+.caret {
+    width: var(--caret-width);
+    height: 5px;
+    background-color: black;
+    animation: blink_placeholder 1s infinite;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    transition: 0.25s;
+    opacity: 0.5;
+}
+
+.caret_vertical {
+    height: 50%;
+    width: var(--caret-vertical-width) !important;
+}
+
+.typed_character {
+    /* animation: char_animation 0.25s ease-in-out; */
+    display: inline-block;
+}
+
+.input_text {
+    white-space: nowrap;
+}
+
+@keyframes char_animation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+    
+}
+
+@keyframes blink_placeholder {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.2;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+    
+}

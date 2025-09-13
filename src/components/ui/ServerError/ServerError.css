@@ -1,0 +1,28 @@
+
+.server_error {
+  margin-top: var(--space-very-large);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-large);
+}
+
+.try_again {
+  background-color: var(--color-shade2);
+  color: var(--color-shade5);
+  padding: var(--space-small) var(--space-medium);
+  border:var(--border-regular);
+  font-size: var(--font-size-medium);
+  box-shadow: var(--box-shadow-regular);
+  cursor: pointer;
+  display: inline-block;
+  user-select: none;
+  transition: 0.25s;
+}
+
+.try_again:hover {
+  transform: translate(-4px, -4px);
+  background-color: var(--color-shade4);
+  box-shadow: var(--box-shadow-large);
+}

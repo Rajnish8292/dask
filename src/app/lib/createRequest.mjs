@@ -1,4 +1,24 @@
-let createRequests = (filters, curr_facet_filter = [], i, requests) => {
+/*
+  createRequests(filters, curr_facet_filter = [], i, requests) -> generate all the combination of facet filters recursively
+
+  input_format ->
+    filters -> array of array of facet filters
+      e.g. [
+              ["difficulty:Easy", "difficulty:Medium"],
+              ["topics:Array", "topics:String"],
+              ["companies:Google", "companies:Amazon"]
+            ]
+    
+    curr_facet_filter -> array of current facet filter (used in recursion)
+      e.g. ["difficulty:Easy", "topics:Array"]  
+
+    i -> current index of filters (used in recursion)
+
+    requests -> array of all the combination of facet filters (used in recursion)
+
+*/
+
+const createRequests = (filters, curr_facet_filter = [], i, requests) => {
   if (i >= filters.length) {
     requests.push([...curr_facet_filter]);
     return;
@@ -10,13 +30,5 @@ let createRequests = (filters, curr_facet_filter = [], i, requests) => {
     curr_facet_filter.pop();
   }
 };
-
-// let requests = [];
-
-// let filters = [];
-
-// createRequests(filters, [], 0, requests);
-
-// console.log(requests);
 
 export default createRequests;

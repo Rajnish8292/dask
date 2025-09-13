@@ -1,0 +1,11 @@
+.recent_search_wrapper {
+    width: auto;
+    border: var(--border-regular);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--font-size-large);
+    margin-top: var(--space-large);
+    padding: var(--space-large);
+    box-shadow: var(--box-shadow-regular);
+}

@@ -1,0 +1,42 @@
+.filters_container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    border-top: var(--border-regular);
+    background-color: var(--color-shade2);
+    padding:var(--space-small);
+    display: flex;
+
+}
+
+.filter_title {
+    position: absolute;
+    background-color: var(--color-shade5);
+    color:var(--color-shade1);
+    padding: var(--space-very-small);
+    font-size: var(--font-size-small);
+    left: var(--space-small);
+    top: 0;
+    transform: translate(0, -90%);
+}
+
+.filter_wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-small);
+}
+.filter {
+    border: var(--border-small);
+    display: inline-block;
+    padding:var(--space-very-small);
+}
+
+.slide_button_container {
+    position: absolute;
+    height: 100%;
+    right: 0;
+    height: auto;
+    width: 50px;
+    background-color: var(--color-shade5);
+}

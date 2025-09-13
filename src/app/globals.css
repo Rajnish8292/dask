@@ -4,12 +4,28 @@
   --color-shade3: #E2EDEE;
   --color-shade4: #A7D9AE;
   --color-shade5: #0D0D0D;
-  /* Base responsive font sizes using clamp() for fluid scaling */
-  --font-size-small: clamp(0.625rem, 0.4rem + 0.4vw, 0.875rem);       /* 10px - 14px */
-  --font-size-regular: clamp(0.75rem, 0.5rem + 0.5vw, 1rem);          /* 12px - 16px */
-  --font-size-large: clamp(0.875rem, 0.625rem + 0.5vw, 1.25rem);      /* 14px - 20px */
-  --font-size-giant: clamp(1.125rem, 0.875rem + 1vw, 1.875rem);       /* 18px - 30px */
-  --font-size-veryLarge: clamp(1.5rem, 1rem + 2vw, 3rem);             /* 24px - 48px */
+
+
+  --font-size-very-small: 12px;
+  --font-size-small:16px;
+  --font-size-regular: 22px;
+  --font-size-medium: 24px;
+  --font-size-large: 28px;
+  --font-size-very-large: 36px;
+
+  --border-small: 2px solid black;
+  --border-regular: 4px solid black;
+  --border-large: 8px solid black;
+
+  --box-shadow-small: 2px 2px 0 black;
+  --box-shadow-regular: 4px 4px 0 black;
+  --box-shadow-large: 8px 8px 0 black;
+
+  --space-very-small: 5px;
+  --space-small: 10px;
+  --space-medium: 20px;
+  --space-large: 40px;
+  --space-very-large: 80px;
 }
 
 @font-face {

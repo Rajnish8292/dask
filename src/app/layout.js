@@ -2,7 +2,7 @@ import "./globals.css";
 
 export const metadata = {
   title: "Dask",
-  description: "Ai powered search engine to search dsa problems",
+  description: "AI powered search engine to search dsa problems",
 };
 
 export default function RootLayout({ children }) {
