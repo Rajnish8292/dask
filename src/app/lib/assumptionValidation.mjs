@@ -72,6 +72,37 @@ const synonyms = {
   },
 };
 
+/*
+
+    assumption_validate(query, facets) -> function to validate the assumption made by gemini for the query
+
+    input_format - >
+        query -> string
+        e.g. "find me a easy array problem from google"
+
+        facets -> array of 3 arrays [difficulty[], topics[], companies[]]
+        e.g. [
+                ["Easy", "Medium", "Hard"],
+                ["Array", "String", "Dynamic Programming"],
+                ["Google", "Amazon", "Microsoft"]
+              ]
+
+    output_format - > return object of arrays with keys difficulty, topics, companies
+        e.g.  {
+                difficulty: [array of valid difficulties],
+                topics: [array of valid topics],
+                companies: [array of valid companies]
+              }
+        or
+    return false if input is not valid
+
+    working ->
+        check if the difficulty, topics, or companies exist in the query or their synonyms exist in the query
+        if exist then push them to the respective array in the output object
+        return the output object
+
+*/
+
 const assumption_validate = (query, facets) => {
   if (!query || !facets) return false;
   if (typeof query != "string") return false;
@@ -83,15 +114,7 @@ const assumption_validate = (query, facets) => {
   let n_difficulty = [],
     n_topics = [],
     n_companies = [];
-  /*
-        Re validation of topics that gemini try to pick from query
 
-        working => 
-            1 - check if topic include in query or not
-            2 - if included then check for abbreviation for that word if exist
-            3 - if not included discard the topic because gemini made an assumption
-            4 - if abbreviation found then add the original topic(key) to n_tpoic[] else just push the topic in n_topic[] because abbreviation for that topic does not exist
-    */
   topics.forEach((topic) => {
     topic = topic.toLowerCase();
 
@@ -115,8 +138,8 @@ const assumption_validate = (query, facets) => {
   });
 
   /*
-        check if company exists in query then just push that company in n_companies[]
-    */
+    check if company name exists in query then just push that company in n_companies[]
+  */
   companies.forEach((company) => {
     if (query.includes(company.toLowerCase())) n_companies.push(company);
   });
