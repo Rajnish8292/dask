@@ -1,0 +1,91 @@
+.problem_detail_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.9);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.problem_detail_container {
+    min-height: 500px;
+    min-width: 400px;
+    width: 500px;
+    background: white;
+    border: var(--border-regular);
+    box-shadow: var(--box-shadow-large);
+    padding: var(--space-medium);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.problem_detail_title {
+    font-size: var(--font-size-large);
+    margin-bottom: var(--space-medium);
+}
+.problem_detail_topics {
+    margin-bottom: var(--space-medium);
+    font-size: var(--font-size-small);
+    margin-top: var(--space-very-small);
+    .topic {
+        display: inline-block;
+        border: var(--border-small);
+        box-shadow: var(--box-shadow-small);
+        margin-right: var(--space-small);
+        padding: var(--space-very-small) var(--space-small);
+    }
+}
+.problem_detail_companies {
+    margin-bottom: var(--space-medium);
+    font-size: var(--font-size-small);
+        margin-top: var(--space-very-small);
+    .company {
+        display: inline-block;
+        border: var(--border-small);
+        box-shadow: var(--box-shadow-small);
+        margin-right: var(--space-small);
+        padding: var(--space-very-small) var(--space-small);
+    }
+
+}
+
+.detail_action_container {
+    margin-top: var(--space-medium);
+    display: grid;
+    grid-template-columns: 50% 50%;
+    gap: var(--space-small);
+}
+
+.detail_action_button {
+    padding: var(--space-small) var(--space-medium);
+    border: var(--border-regular);
+    box-shadow: var(--box-shadow-regular);
+    font-size: var(--font-size-small);
+    cursor: pointer;
+    text-align: center;
+    transition: 0.25s;
+
+}
+
+.detail_solve_button:hover {
+    transform: translate(-4px, -4px);
+    background-color: var(--color-shade4);
+    box-shadow: var(--box-shadow-large);
+}
+
+.detail_close_button {
+    background-color: var(--color-shade5);
+    color: var(--color-shade2);
+}
+
+.detail_close_button:hover {
+    transform: translate(-4px, -4px);
+    background-color: var(--color-shade1);
+    box-shadow: var(--box-shadow-large);
+    color: var(--color-shade5);
+}

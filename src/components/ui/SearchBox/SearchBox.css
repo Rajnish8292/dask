@@ -1,6 +1,10 @@
 :root {
     --caret-width:22px;
     --caret-vertical-width: 10px;
+    --close-icon-height: 50px;
+    --close-icon-width: 50px;
+    --close-bar-height: 45px;
+    --close-bar-width: 7px;
 }
 
 .editiable_content_div {
@@ -59,13 +63,78 @@
 }
 
 .typed_character {
-    /* animation: char_animation 0.25s ease-in-out; */
-    display: inline-block;
+        display: inline-block;
 }
 
 .input_text {
     white-space: nowrap;
+    width: 100%;
+    /* background-color: red; */
+    overflow: hidden;
 }
+
+.clear_input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: var(--space-medium);
+    height: var(--close-icon-height);
+    width: var(--close-icon-width);
+    border-radius: 50%;
+    cursor: pointer;
+    transition:0.25s;
+}
+.close_icon_container {
+    position: relative;
+    transition: 0.25s;
+    .close_bar {
+        height: var(--close-bar-height);
+        width: var(--close-bar-width);
+        background-color: var(--color-shade5);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transform-origin: center;
+        transition: 0.25s;
+    }
+    .close_bar_1 {
+        transform: translateY(-50%) rotate(45deg);
+    }
+
+    .close_bar_2 {
+        transform: translateY(-50%) rotate(-45deg);
+    }
+}
+
+
+.close_icon_container_disappear {
+    position: relative;
+    transform: scale(0.6);
+    opacity: 0;
+    transition: 0.25s;
+    .close_bar {
+        height: var(--close-bar-height);
+        width: var(--close-bar-width);
+        background-color: var(--color-shade5);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transform-origin: center;
+        transition: 0.25s;
+    }
+    .close_bar_1 {
+        transform: translateY(-50%) rotate(90deg);
+    }
+
+    .close_bar_2 {
+        transform: translateY(-50%) rotate(-90deg);
+    }
+}
+
+
 
 @keyframes char_animation {
     0% {

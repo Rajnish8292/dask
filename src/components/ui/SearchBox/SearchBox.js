@@ -3,24 +3,30 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import gsap from "gsap";
 import "./SearchBox.css";
+import delay from "@/app/utils/delay.mjs";
 
-export default function SearchBox({ startWithExampleHandler }) {
+export default function SearchBox({
+  startWithExampleHandler,
+  shareSearchRequestData,
+}) {
   const inputRef = useRef();
   const caretRef = useRef();
   const placeholderRef = useRef();
   const [query, setQuery] = useState("");
   const activeCharacter = useRef();
   const editiableRef = useRef();
+  const clearInputRef = useRef();
 
   const keyDownHandlerWrapper = useCallback(
-    (inputRef, caretRef, placeholderRef, editiableRef) => {
+    (inputRef, caretRef, placeholderRef, editiableRef, clearInputRef) => {
       const editiableElem = inputRef.current;
       const caretElem = caretRef.current;
       const placeholderElem = placeholderRef.current;
       const parentElem = editiableRef.current;
+      const clearInputElem = clearInputRef.current;
 
       const rightMostView = () => {
-        parentElem.scrollLeft = parentElem.scrollWidth;
+        editiableElem.scrollLeft = editiableElem.scrollWidth;
       };
 
       const handleCharacterClick = (characterElem) => {
@@ -45,7 +51,6 @@ export default function SearchBox({ startWithExampleHandler }) {
       };
 
       const handlePlaceholder = (queryLength) => {
-        console.log(queryLength);
         if (queryLength == 0) {
           placeholderElem.style.opacity = 0.5;
           caretElem.style.top = "50%";
@@ -57,6 +62,21 @@ export default function SearchBox({ startWithExampleHandler }) {
           placeholderElem.style.opacity = 0;
         }
       };
+
+      const handleClearInput = (queryLength) => {
+        if (queryLength == 0) {
+          clearInputElem.children[0].classList.remove("close_icon_container");
+          clearInputElem.children[0].classList.add(
+            "close_icon_container_disappear"
+          );
+        } else {
+          clearInputElem.children[0].classList.remove(
+            "close_icon_container_disappear"
+          );
+          clearInputElem.children[0].classList.add("close_icon_container");
+        }
+      };
+
       const createCharacter = (character) => {
         const divElem = document.createElement("div");
         divElem.className = "typed_character";
@@ -64,7 +84,6 @@ export default function SearchBox({ startWithExampleHandler }) {
         divElem.onclick = () => {
           handleCharacterClick(divElem);
         };
-        // editiableElem.appendChild(divElem);
         editiableElem.insertBefore(
           divElem,
           activeCharacter?.current?.nextElementSibling
@@ -72,6 +91,7 @@ export default function SearchBox({ startWithExampleHandler }) {
         handleCaret(divElem);
         setQuery(editiableElem.innerText);
         handlePlaceholder(editiableElem.innerText.length);
+        handleClearInput(editiableElem.innerText.length);
         rightMostView();
         activeCharacter.current = divElem;
 
@@ -93,8 +113,32 @@ export default function SearchBox({ startWithExampleHandler }) {
         }
 
         setQuery(editiableElem.innerText);
+        handleClearInput(editiableElem.innerText.length);
         handlePlaceholder(editiableElem.innerText.length);
         activeCharacter.current = nextCharacterElem;
+      };
+
+      const clearInput = () => {
+        const characterElements = editiableElem.children;
+
+        gsap.to(characterElements, {
+          y: -6,
+          scale: 0.6,
+          opacity: 0,
+          duration: 0.09,
+          stagger: {
+            from: "end",
+            amount: 0.1,
+          },
+          onComplete: () => {
+            activeCharacter.current =
+              characterElements[characterElements.length - 1];
+
+            while (editiableElem.innerText.length) {
+              deleteCharacter();
+            }
+          },
+        });
       };
 
       const createSpace = () => {
@@ -133,6 +177,108 @@ export default function SearchBox({ startWithExampleHandler }) {
         handleCaret(prevElem);
         activeCharacter.current = prevElem;
       };
+      const sendSearchRequest = async (query) => {
+        /*
+          1 -> currently sending the request and waitng for response
+          2 -> got the response with status 200
+          3 -> got the error
+        */
+        if (!query || !query.length) {
+          shareSearchRequestData({
+            loading: false,
+            result: null,
+            error: true,
+          });
+
+          return;
+        }
+        shareSearchRequestData({
+          loading: true,
+          result: null,
+          error: false,
+        });
+        try {
+          const request = await fetch(
+            "https://jsonplaceholder.typicode.com/posts",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ query: query }),
+            }
+          );
+
+          const result = {
+            facets: {
+              companies: ["google", "amazon", "uber", "zomato", "Paypal"],
+              topics: [
+                "dynamic programming",
+                "Binary tree",
+                "graph",
+                "Linked List",
+                "array",
+              ],
+              difficulty: ["medium"],
+            },
+            result: [
+              {
+                title: "Two Sum",
+                difficulty: "Easy",
+                companies: ["Amazon", "Microsoft", "Google"],
+                topics: ["Array", "Hash Table"],
+              },
+              {
+                title: "Longest Substring Without Repeating Characters",
+                difficulty: "Medium",
+                companies: ["Adobe", "Facebook", "Netflix"],
+                topics: ["String", "Sliding Window"],
+              },
+              {
+                title: "Merge k Sorted Lists",
+                difficulty: "Hard",
+                companies: ["Amazon", "Uber", "LinkedIn"],
+                topics: ["Linked List", "Heap", "Divide and Conquer"],
+              },
+              {
+                title: "Binary Tree Level Order Traversal",
+                difficulty: "Medium",
+                companies: ["Google", "Apple", "Microsoft"],
+                topics: ["Tree", "Breadth-First Search"],
+              },
+              {
+                title: "Valid Parentheses",
+                difficulty: "Easy",
+                companies: ["Amazon", "Facebook"],
+                topics: ["String", "Stack"],
+              },
+            ],
+          };
+          await delay(500);
+          shareSearchRequestData({
+            loading: false,
+            result: result,
+            error: false,
+          });
+
+          const recentSearchData =
+            JSON.parse(localStorage.getItem("recent_searches")) || [];
+          if (recentSearchData.indexOf(editiableElem.innerText) === -1) {
+            recentSearchData.unshift(editiableElem.innerText);
+            localStorage.setItem(
+              "recent_searches",
+              JSON.stringify(recentSearchData)
+            );
+          }
+        } catch (err) {
+          await delay(500);
+          shareSearchRequestData({
+            loading: false,
+            result: null,
+            error: true,
+          });
+        }
+      };
 
       const pasteText = (text) => {
         if (!text || !text.length) return;
@@ -147,7 +293,6 @@ export default function SearchBox({ startWithExampleHandler }) {
             character_array.push(createCharacter(text[i]));
           }
         }
-
         gsap.from(character_array, {
           y: -6,
           scale: 0.6,
@@ -159,9 +304,12 @@ export default function SearchBox({ startWithExampleHandler }) {
 
       return {
         pasteText,
+        clearInput,
         keyDownHandler: (e) => {
+          e.preventDefault();
           switch (e.key) {
             case "Enter":
+              sendSearchRequest(editiableElem.innerText.trim());
               break;
             case "Backspace":
               deleteCharacter();
@@ -206,24 +354,40 @@ export default function SearchBox({ startWithExampleHandler }) {
   );
 
   useEffect(() => {
-    if (!inputRef?.current || !caretRef?.current || !placeholderRef?.current)
+    if (
+      !inputRef?.current ||
+      !caretRef?.current ||
+      !placeholderRef?.current ||
+      !clearInputRef?.current
+    )
       return;
-    const { keyDownHandler, pasteText } = keyDownHandlerWrapper(
+    const { keyDownHandler, pasteText, clearInput } = keyDownHandlerWrapper(
       inputRef,
       caretRef,
       placeholderRef,
-      editiableRef
+      editiableRef,
+      clearInputRef
     );
+
+    const clearButtonClickhandler = (e) => {
+      e.preventDefault();
+      clearInput();
+    };
 
     startWithExampleHandler({ pasteText });
 
+    clearInputRef.current.addEventListener("click", clearButtonClickhandler);
     window.addEventListener("keydown", keyDownHandler);
-    return () => window.removeEventListener("keydown", keyDownHandler);
+    return () => {
+      window.removeEventListener("keydown", keyDownHandler);
+      clearInputRef.current.addEventListener("click", clearButtonClickhandler);
+    };
   }, [
     inputRef?.current,
     caretRef?.current,
     placeholderRef?.current,
     editiableRef?.current,
+    clearInputRef?.current,
   ]);
 
   return (
@@ -237,6 +401,12 @@ export default function SearchBox({ startWithExampleHandler }) {
           ref={caretRef}
           data-caret={true}
         ></div>
+        <div className="clear_input" ref={clearInputRef}>
+          <div className="close_icon_container_disappear">
+            <div className="close_bar_1 close_bar"></div>
+            <div className="close_bar_2 close_bar"></div>
+          </div>
+        </div>
         <div className="input_text" ref={inputRef}></div>
       </div>
     </>

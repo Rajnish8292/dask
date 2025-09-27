@@ -1,0 +1,15 @@
+.active_problem_action_button {
+  background-color: var(--color-shade4);
+  box-shadow: var(--box-shadow-regular);
+       
+  color: var(--color-shade5);
+  padding: var(--space-very-small) var(--space-small);
+  border:var(--border-small);
+  font-size: var(--font-size-small);
+  
+  cursor: pointer;
+  display: inline-block;
+  user-select: none;
+  transition: 0.25s;
+  margin-left: var(--space-medium);
+}
