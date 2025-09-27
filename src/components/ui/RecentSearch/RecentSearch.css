@@ -9,6 +9,8 @@
     margin-top: var(--space-large);
     padding: var(--space-medium);
     box-shadow: var(--box-shadow-regular);
+    max-height:600px;
+    overflow-y: auto;
 
 }
 
@@ -22,12 +24,10 @@
     margin-left: 100px;
 }
 .recent_searches {
-    padding-top: var(--space-medium);
-    /* margin-top: var(--space-medium); */
     width: 100%;
     overflow: hidden;
-    transition: 0.25s;
-    background-color: red;
+    transition: 0.5s;
+    max-height: "0px";
 }
 
 .recent_search_item {
@@ -37,9 +37,9 @@
     padding: var(--space-small) var(--space-medium);
     border: var(--border-small);
     box-shadow: var(--box-shadow-small);
-    margin-bottom: var(--space-small);
     cursor: pointer;
     margin-left: var(--space-medium);
+    margin-top: var(--space-small);
     font-size: var(--font-size-small);
     transition: 0.25s;
 
