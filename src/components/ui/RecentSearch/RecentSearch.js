@@ -27,7 +27,7 @@ export default function RecentSearch() {
       </div>
       <div
         className="recent_searches"
-        style={{ transition: "0.25s", height: isVisible ? "auto" : 0 }}
+        style={{ maxHeight: isVisible ? "500px" : "0px" }}
       >
         {recentSearches.length > 0 &&
           recentSearches.map((searchItem, index) => {
@@ -56,25 +56,6 @@ export default function RecentSearch() {
               </div>
             );
           })}
-        {/* //   <div className="recent_search_item">
-      //     array and dynamic programming based problems that asked in microsoft{" "}
-      //     <div className="delete_search">
-      //       <IoCloseSharp />
-      //     </div>
-      //   </div>
-      //   <div className="recent_search_item">
-      //     search for medium level dynamic programming problems
-      //     <div className="delete_search">
-      //       <IoCloseSharp />
-      //     </div>
-      //   </div>
-      //   <div className="recent_search_item">
-      //     I have an interview tomorrow at Amazon—please search for medium-level
-      //     binary tree problems.
-      //     <div className="delete_search">
-      //       <IoCloseSharp />
-      //     </div>
-      //   </div> */}
       </div>
     </div>
   );
