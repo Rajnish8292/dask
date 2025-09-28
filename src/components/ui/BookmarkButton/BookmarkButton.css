@@ -13,3 +13,9 @@
   transition: 0.25s;
   margin-left: var(--space-medium);
 }
+
+@media screen and (max-width: 627.20px) {
+  .active_problem_action_button {
+    padding: var(--space-small) var(--space-small);
+  }
+}

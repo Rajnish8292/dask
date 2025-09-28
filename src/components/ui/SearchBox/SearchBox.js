@@ -16,7 +16,16 @@ export default function SearchBox({
   const activeCharacter = useRef();
   const editiableRef = useRef();
   const clearInputRef = useRef();
+  const dummyInputRef = useRef();
 
+  const dummyInputFocus = useCallback(() => {
+    if (!dummyInputRef?.current) return;
+    dummyInputRef.current.focus();
+  }, []);
+  const dummyInputBlur = useCallback(() => {
+    if (!dummyInputRef?.current) return;
+    dummyInputRef.current.blur();
+  }, []);
   const keyDownHandlerWrapper = useCallback(
     (inputRef, caretRef, placeholderRef, editiableRef, clearInputRef) => {
       const editiableElem = inputRef.current;
@@ -44,7 +53,9 @@ export default function SearchBox({
           caretElem.style.width = characterElem.offsetWidth + "px";
           caretElem.style.left =
             Math.min(
-              editiableElem.offsetLeft + editiableElem.offsetWidth,
+              editiableElem.offsetLeft +
+                editiableElem.offsetWidth -
+                caretElem.offsetWidth,
               characterElem.offsetLeft
             ) + "px";
           caretElem.style.top =
@@ -196,6 +207,7 @@ export default function SearchBox({
 
           return;
         }
+        dummyInputBlur();
         shareSearchRequestData({
           loading: true,
           result: null,
@@ -288,6 +300,7 @@ export default function SearchBox({
         if (!text || !text.length) return;
 
         inputRef.current.innerHTML = "";
+        dummyInputFocus();
 
         let character_array = [];
         for (let i = 0; i < text.length; i++) {
@@ -309,46 +322,29 @@ export default function SearchBox({
       return {
         pasteText,
         clearInput,
+        moveRight,
+        moveLeft,
         keyDownHandler: (e) => {
           e.preventDefault();
-          switch (e.key) {
-            case "Enter":
+          console.log({ data: e.data, key: e.key });
+          switch (e.inputType) {
+            case "insertLineBreak":
               sendSearchRequest(editiableElem.innerText.trim());
               break;
-            case "Backspace":
+            case "deleteContentBackward":
               deleteCharacter();
               break;
-            case "Escape":
+            case "deleteContentBackward":
               deleteCharacter();
-              break;
-            case "Tab":
-              break;
-            case "Shift":
-              break;
-            case "Control":
-              break;
-            case "CapsLock":
-              break;
-            case "AltGraph":
-              break;
-            case "Insert":
-              break;
-            case "ArrowDown":
-              break;
-            case "ArrowUp":
-              break;
-            case "ArrowRight":
-              moveRight();
-              break;
-            case "ArrowLeft":
-              moveLeft();
-              break;
-            case " ":
-              e.preventDefault;
-              createSpace();
               break;
             default:
-              createCharacter(e.key);
+              if (e.data == " ") {
+                e.preventDefault;
+                createSpace();
+              } else {
+                createCharacter(e.data);
+              }
+
               break;
           }
         },
@@ -362,29 +358,43 @@ export default function SearchBox({
       !inputRef?.current ||
       !caretRef?.current ||
       !placeholderRef?.current ||
-      !clearInputRef?.current
+      !clearInputRef?.current ||
+      !dummyInputRef?.current
     )
       return;
-    const { keyDownHandler, pasteText, clearInput } = keyDownHandlerWrapper(
-      inputRef,
-      caretRef,
-      placeholderRef,
-      editiableRef,
-      clearInputRef
-    );
+    const { keyDownHandler, pasteText, clearInput, moveLeft, moveRight } =
+      keyDownHandlerWrapper(
+        inputRef,
+        caretRef,
+        placeholderRef,
+        editiableRef,
+        clearInputRef
+      );
 
     const clearButtonClickhandler = (e) => {
       e.preventDefault();
       clearInput();
     };
 
+    const windowKeydownHandler = (e) => {
+      if (e.key == "ArrowLeft") {
+        moveLeft();
+      } else if (e.key == "ArrowRight") {
+        moveRight();
+      }
+    };
     startWithExampleHandler({ pasteText });
 
+    window.addEventListener("keydown", windowKeydownHandler);
     clearInputRef.current.addEventListener("click", clearButtonClickhandler);
-    window.addEventListener("keydown", keyDownHandler);
+    dummyInputRef.current.addEventListener("beforeinput", keyDownHandler);
     return () => {
-      window.removeEventListener("keydown", keyDownHandler);
-      clearInputRef.current.addEventListener("click", clearButtonClickhandler);
+      window.removeEventListener("keydown", windowKeydownHandler);
+      dummyInputRef.current.removeEventListener("beforeinput", keyDownHandler);
+      clearInputRef.current.removeEventListener(
+        "click",
+        clearButtonClickhandler
+      );
     };
   }, [
     inputRef?.current,
@@ -392,11 +402,29 @@ export default function SearchBox({
     placeholderRef?.current,
     editiableRef?.current,
     clearInputRef?.current,
+    dummyInputRef?.current,
   ]);
 
   return (
     <>
-      <div className="editiable_content_div" ref={editiableRef} tabIndex={0}>
+      <div
+        className="editiable_content_div"
+        ref={editiableRef}
+        tabIndex={0}
+        onClick={() => {
+          dummyInputFocus();
+        }}
+      >
+        <input
+          type="text"
+          style={{
+            opacity: 0,
+            position: "fixed",
+            top: "-100px",
+            left: "-100px",
+          }}
+          ref={dummyInputRef}
+        />
         <div className="div_placeholder" ref={placeholderRef}>
           Search the way you like!
         </div>

@@ -18,7 +18,7 @@ export default function Result({ resultProblems, openStartWithExample }) {
   const isProblemExist = useCallback((problemDetails) => {
     const { title } = problemDetails;
     const storageData = JSON.parse(localStorage.getItem("bookmark_problems"));
-    console.log({ storageData, title });
+
     if (!storageData || !title) return false;
     for (let i = 0; i < storageData.length; i++) {
       if (storageData[i].title.toLowerCase() === title.toLowerCase())
@@ -71,9 +71,6 @@ export default function Result({ resultProblems, openStartWithExample }) {
           result.map((problem) => {
             return (
               <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.25 }}
                 className="problem"
                 key={problem.title.split(" ").join("-")}
                 onClick={() => {
@@ -82,15 +79,17 @@ export default function Result({ resultProblems, openStartWithExample }) {
                 }}
               >
                 <div className="problem_title">
-                  {problem.title}
-                  <span
-                    className={[
-                      "difficulty",
-                      problem.difficulty.toLowerCase(),
-                    ].join(" ")}
-                  >
-                    {problem.difficulty}
-                  </span>
+                  <p style={{ textAlign: "center" }}>
+                    {problem.title}{" "}
+                    <span
+                      className={[
+                        "difficulty",
+                        problem.difficulty.toLowerCase(),
+                      ].join(" ")}
+                    >
+                      {problem.difficulty}
+                    </span>
+                  </p>
                 </div>
                 <div className="problem_actions">
                   <div

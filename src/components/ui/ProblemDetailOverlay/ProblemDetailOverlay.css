@@ -12,9 +12,8 @@
 }
 
 .problem_detail_container {
-    min-height: 500px;
-    min-width: 400px;
     width: 500px;
+    min-height: 400px;
     background: white;
     border: var(--border-regular);
     box-shadow: var(--box-shadow-large);
@@ -88,4 +87,28 @@
     background-color: var(--color-shade1);
     box-shadow: var(--box-shadow-large);
     color: var(--color-shade5);
+}
+
+@media screen and (max-width: 627.20px) {
+    .problem_detail_container {
+        width: 70%;
+        /* height: 60%; */
+        overflow: auto;
+         box-shadow:var(--box-shadow-regular)
+    }
+    .detail_action_container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .problem_detail_topics {
+        .topic {
+            margin-bottom: var(--space-small);
+        }
+    }
+    .problem_detail_companies {
+        .company {
+            margin-bottom: var(--space-small);
+        }
+    }
 }
