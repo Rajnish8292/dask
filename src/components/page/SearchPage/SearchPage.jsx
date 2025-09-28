@@ -2,12 +2,11 @@
 import Filters from "@/components/ui/Filters/Filters";
 import RecentSearch from "@/components/ui/RecentSearch/RecentSearch";
 import Result from "@/components/ui/Result/Result";
-import ResultAction from "@/components/ui/ResultAction/ResultAction";
 import ResultSuspense from "@/components/ui/ResultSuspense/ResultSuspense";
 import SearchBox from "@/components/ui/SearchBox/SearchBox";
 import ServerError from "@/components/ui/ServerError/ServerError";
 import StartExample from "@/components/ui/StartExample/StartExample";
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 
 export default function SearchPage({}) {
   const [isSearching, setIsSearching] = useState(false);
@@ -33,16 +32,15 @@ export default function SearchPage({}) {
     setResult(null);
   }, []);
 
-  useEffect(() => {
+  const checkRecentSearches = useCallback(() => {
     const recentSearchData = JSON.parse(
-      localStorage.getItem("recent_searches")
+      localStorage.getItem("recent_searches") || "[]"
     );
+    setIsRecentSearch(recentSearchData.length > 0);
+  }, []);
 
-    if (recentSearchData && recentSearchData.length > 0) {
-      setIsRecentSearch(true);
-    } else {
-      setIsRecentSearch(false);
-    }
+  useEffect(() => {
+    checkRecentSearches();
   }, []);
 
   return (
@@ -51,7 +49,9 @@ export default function SearchPage({}) {
         startWithExampleHandler={startWithExampleHandler}
         shareSearchRequestData={shareSearchRequestData}
       />
-      {isRecentSearch && <RecentSearch pasteTextFn={pasteTextFn} />}
+      <Suspense fallback={<div>Loading...</div>}>
+        {isRecentSearch && <RecentSearch pasteTextFn={pasteTextFn} />}
+      </Suspense>
       {!isSearching &&
         !isError &&
         !result &&
@@ -66,13 +66,13 @@ export default function SearchPage({}) {
             resultProblems={result.result}
             openStartWithExample={openStartWithExample}
           />
-          <Filters
+          {/* <Filters
             facets={[
               ...result.facets.difficulty,
               ...result.facets.companies,
               ...result.facets.topics,
             ]}
-          />
+          /> */}
         </>
       )}
     </>

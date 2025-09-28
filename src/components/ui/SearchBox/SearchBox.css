@@ -21,7 +21,7 @@
     flex-direction: row;
     align-items: center;
     padding: var(--space-small) var(--space-very-large) var(--space-small) var(--space-medium);
-    border: var(--border-regular);
+    border: var(--border-small);
     box-shadow: var(--box-shadow-regular);
     font-family: "Courier New", monospace;
     transition: 0.5s;
@@ -66,11 +66,8 @@
         display: inline-block;
 }
 
-.input_text {
-    white-space: nowrap;
-    width: 100%;
-    overflow: hidden;
-}
+
+
 
 .clear_input {
     display: flex;
@@ -133,6 +130,42 @@
     }
 }
 
+   .input_text {
+    
+    width: 95%;
+    white-space: nowrap;
+    overflow: hidden;
+
+}
+@media screen and (max-width: 627.20px) {
+    .editiable_content_div {
+        font-size: calc(var(--font-size-small) + 4px);
+    }
+
+    :root {
+    --caret-width:16px;
+    --caret-vertical-width: 8px;
+    --close-icon-height: 50px;
+    --close-icon-width: 50px;
+    --close-bar-height: 30px;
+    --close-bar-width: 5px;
+}
+
+.editiable_content_div {
+    padding: var(--space-very-small) var(--space-medium) var(--space-very-small) var(--space-small);
+}
+.caret_vertical {
+    height: 40%;
+    width: var(--caret-vertical-width) !important;
+}
+    .input_text {
+    
+    width: 85%;
+    white-space: nowrap;
+    overflow: hidden;
+
+}
+}
 
 
 @keyframes char_animation {

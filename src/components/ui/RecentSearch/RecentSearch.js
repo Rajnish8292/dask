@@ -48,7 +48,7 @@ export default function RecentSearch({ pasteTextFn }) {
                   }
                 }}
               >
-                {searchItem}
+                <p>{searchItem}</p>
                 <div
                   className="delete_search"
                   onClick={() => {

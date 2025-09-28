@@ -1,15 +1,18 @@
 .result_action_container {
     padding: var(--space-medium) var(--space-medium);
-    border: var(--border-regular);
+    border: var(--border-small);
     box-shadow: var(--box-shadow-small);
-    margin-top: var(--space-large);
+    margin-top: var(--space-very-large);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: black;
+    color: white;
 }
 
 .result_count {
     font-size: var(--font-size-regular);
+    font-weight: bold;
 }
 
 .action_button {
@@ -31,3 +34,21 @@
   background-color: var(--color-shade4);
   box-shadow: var(--box-shadow-regular);
 }
+
+@media screen and (max-width: 627.20px) {
+
+    .result_action_container {
+      flex-direction: column;
+      padding: var(--space-small) 0;
+    }
+    .action_container {
+      margin-top: var(--space-medium);
+      display: flex;
+    }
+    .action_button {
+        padding: var(--space-small) var(--space-small);
+        white-space: nowrap;
+        margin-left: var(--space-small);
+    }
+}
+
