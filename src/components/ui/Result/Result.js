@@ -1,12 +1,17 @@
 import { AnimatePresence } from "motion/react";
 import ProblemDetailOverlay from "../ProblemDetailOverlay/ProblemDetailOverlay";
+import ResultAction from "../ResultAction/ResultAction";
 import "./Result.css";
 
 import { useCallback, useRef, useState } from "react";
 import BookmarkButton from "../BookmarkButton/BookmarkButton";
+import sort from "@/app/utils/sort.mjs";
 
-export default function Result({ result }) {
+import { motion } from "motion/react";
+
+export default function Result({ resultProblems, openStartWithExample }) {
   const resultContRef = useRef();
+  const [result, setResult] = useState(resultProblems);
   const [overlayDeatils, setOverlayDetails] = useState(null);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
 
@@ -23,6 +28,12 @@ export default function Result({ result }) {
     return false;
   });
 
+  const sortByDifficulty = useCallback(() => {
+    setResult((prev) => {
+      return sort(prev);
+    });
+  }, []);
+
   const removeBookmarkProblem = useCallback((problemDetails) => {
     const { title } = problemDetails;
     const storageData = JSON.parse(localStorage.getItem("bookmark_problems"));
@@ -38,21 +49,31 @@ export default function Result({ result }) {
     if (isProblemExist(problemDetails) || !problemDetails) return;
 
     let updatedData = [];
+
     if (storageData) {
       updatedData = [...storageData, problemDetails];
     } else {
       updatedData = [problemDetails];
     }
+
     localStorage.setItem("bookmark_problems", JSON.stringify(updatedData));
   });
 
   return (
     <>
+      <ResultAction
+        noOfResult={result?.length}
+        openStartWithExample={openStartWithExample}
+        sortByDifficulty={sortByDifficulty}
+      />
       <div className="result_container" ref={resultContRef}>
         {result &&
           result.map((problem) => {
             return (
-              <div
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25 }}
                 className="problem"
                 key={problem.title.split(" ").join("-")}
                 onClick={() => {
@@ -72,7 +93,24 @@ export default function Result({ result }) {
                   </span>
                 </div>
                 <div className="problem_actions">
-                  <div className="problem_action_button">Solve</div>
+                  <div
+                    className="problem_action_button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      if (window) {
+                        window.open(
+                          `https://leetcode.com/problems/${problem.title
+                            .toLowerCase()
+                            .split(" ")
+                            .join("-")}`,
+                          "_blank"
+                        );
+                      }
+                    }}
+                  >
+                    Solve
+                  </div>
                   <BookmarkButton
                     isProblemExist={isProblemExist}
                     addBookmarkProblem={addBookmarkProblem}
@@ -80,7 +118,7 @@ export default function Result({ result }) {
                     problemDetails={problem}
                   />
                 </div>
-              </div>
+              </motion.div>
             );
           })}
       </div>

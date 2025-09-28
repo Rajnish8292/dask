@@ -7,9 +7,9 @@ import ResultSuspense from "@/components/ui/ResultSuspense/ResultSuspense";
 import SearchBox from "@/components/ui/SearchBox/SearchBox";
 import ServerError from "@/components/ui/ServerError/ServerError";
 import StartExample from "@/components/ui/StartExample/StartExample";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-export default function SearchPage({ example }) {
+export default function SearchPage({}) {
   const [isSearching, setIsSearching] = useState(false);
   const [isError, setIsError] = useState(false);
   const [result, setResult] = useState(null);
@@ -25,6 +25,12 @@ export default function SearchPage({ example }) {
     setIsSearching(loading);
     setIsError(error);
     setResult(result);
+  }, []);
+
+  const openStartWithExample = useCallback(() => {
+    setIsSearching(false);
+    setIsError(false);
+    setResult(null);
   }, []);
 
   useEffect(() => {
@@ -45,7 +51,7 @@ export default function SearchPage({ example }) {
         startWithExampleHandler={startWithExampleHandler}
         shareSearchRequestData={shareSearchRequestData}
       />
-      {isRecentSearch && <RecentSearch />}
+      {isRecentSearch && <RecentSearch pasteTextFn={pasteTextFn} />}
       {!isSearching &&
         !isError &&
         !result &&
@@ -56,8 +62,10 @@ export default function SearchPage({ example }) {
       {isSearching && !isError && !result && <ResultSuspense />}
       {!isSearching && !isError && result && (
         <>
-          <ResultAction noOfResult={result.result.length} />
-          <Result result={result.result} />
+          <Result
+            resultProblems={result.result}
+            openStartWithExample={openStartWithExample}
+          />
           <Filters
             facets={[
               ...result.facets.difficulty,

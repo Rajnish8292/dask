@@ -69,7 +69,6 @@
 .input_text {
     white-space: nowrap;
     width: 100%;
-    /* background-color: red; */
     overflow: hidden;
 }
 

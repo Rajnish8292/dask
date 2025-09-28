@@ -12,6 +12,8 @@
     "@google/genai": "^1.9.0",
     "@gsap/react": "^2.1.2",
     "@huggingface/inference": "^4.5.1",
+    "@studio-freight/lenis": "^1.0.42",
+    "@studio-freight/react-lenis": "^0.0.47",
     "algoliasearch": "^5.32.0",
     "gsap": "^3.13.0",
     "motion": "^12.23.18",
