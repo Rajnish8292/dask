@@ -214,62 +214,61 @@ export default function SearchBox({
           error: false,
         });
         try {
-          // const request = await fetch(
-          //   "https://jsonplaceholder.typicode.com/posts",
-          //   {
-          //     method: "POST",
-          //     headers: {
-          //       "Content-Type": "application/json",
-          //     },
-          //     body: JSON.stringify({ query: query }),
-          //   }
-          // );
-
-          const result = {
-            facets: {
-              companies: ["google", "amazon", "uber", "zomato", "Paypal"],
-              topics: [
-                "dynamic programming",
-                "Binary tree",
-                "graph",
-                "Linked List",
-                "array",
-              ],
-              difficulty: ["medium"],
+          const request = await fetch("/api/search", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
             },
-            result: [
-              {
-                title: "Two Sum",
-                difficulty: "Easy",
-                companies: ["Amazon", "Microsoft", "Google"],
-                topics: ["Array", "Hash Table"],
-              },
-              {
-                title: "Longest Substring Without Repeating Characters",
-                difficulty: "Medium",
-                companies: ["Adobe", "Facebook", "Netflix"],
-                topics: ["String", "Sliding Window"],
-              },
-              {
-                title: "Merge k Sorted Lists",
-                difficulty: "Hard",
-                companies: ["Amazon", "Uber", "LinkedIn"],
-                topics: ["Linked List", "Heap", "Divide and Conquer"],
-              },
-              {
-                title: "Binary Tree Level Order Traversal",
-                difficulty: "Medium",
-                companies: ["Google", "Apple", "Microsoft"],
-                topics: ["Tree", "Breadth-First Search"],
-              },
-              {
-                title: "Valid Parentheses",
-                difficulty: "Easy",
-                companies: ["Amazon", "Facebook"],
-                topics: ["String", "Stack"],
-              },
-            ],
-          };
+            body: JSON.stringify({ query: query }),
+          });
+
+          const result = await request.json();
+
+          // const result = {
+          //   facets: {
+          //     companies: ["google", "amazon", "uber", "zomato", "Paypal"],
+          //     topics: [
+          //       "dynamic programming",
+          //       "Binary tree",
+          //       "graph",
+          //       "Linked List",
+          //       "array",
+          //     ],
+          //     difficulty: ["medium"],
+          //   },
+          //   result: [
+          //     {
+          //       title: "Two Sum",
+          //       difficulty: "Easy",
+          //       companies: ["Amazon", "Microsoft", "Google"],
+          //       topics: ["Array", "Hash Table"],
+          //     },
+          //     {
+          //       title: "Longest Substring Without Repeating Characters",
+          //       difficulty: "Medium",
+          //       companies: ["Adobe", "Facebook", "Netflix"],
+          //       topics: ["String", "Sliding Window"],
+          //     },
+          //     {
+          //       title: "Merge k Sorted Lists",
+          //       difficulty: "Hard",
+          //       companies: ["Amazon", "Uber", "LinkedIn"],
+          //       topics: ["Linked List", "Heap", "Divide and Conquer"],
+          //     },
+          //     {
+          //       title: "Binary Tree Level Order Traversal",
+          //       difficulty: "Medium",
+          //       companies: ["Google", "Apple", "Microsoft"],
+          //       topics: ["Tree", "Breadth-First Search"],
+          //     },
+          //     {
+          //       title: "Valid Parentheses",
+          //       difficulty: "Easy",
+          //       companies: ["Amazon", "Facebook"],
+          //       topics: ["String", "Stack"],
+          //     },
+          //   ],
+          // };
           await delay(500);
           shareSearchRequestData({
             loading: false,

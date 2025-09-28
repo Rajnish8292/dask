@@ -72,7 +72,7 @@ export default function Result({ resultProblems, openStartWithExample }) {
             return (
               <motion.div
                 className="problem"
-                key={problem.title.split(" ").join("-")}
+                key={problem.title.split(" ").join("-") + `_${Math.random()}`}
                 onClick={() => {
                   setOverlayDetails({ ...problem });
                   setIsOverlayOpen(true);
