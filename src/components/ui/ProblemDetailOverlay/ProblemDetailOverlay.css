@@ -36,6 +36,7 @@
         border: var(--border-small);
         box-shadow: var(--box-shadow-small);
         margin-right: var(--space-small);
+        margin-top: var(--space-small);
         padding: var(--space-very-small) var(--space-small);
     }
 }
@@ -43,11 +44,14 @@
     margin-bottom: var(--space-medium);
     font-size: var(--font-size-small);
         margin-top: var(--space-very-small);
+        max-height: 40vh;
+        overflow-y: auto;
     .company {
         display: inline-block;
         border: var(--border-small);
         box-shadow: var(--box-shadow-small);
         margin-right: var(--space-small);
+        margin-top: var(--space-small);
         padding: var(--space-very-small) var(--space-small);
     }
 
