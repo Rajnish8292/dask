@@ -5,10 +5,10 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    font-size: var(--font-size-large);
+    font-size: var(--font-size-regular);
     margin-top: var(--space-large);
     padding: var(--space-medium);
-    box-shadow: var(--box-shadow-regular);
+    box-shadow: var(--box-shadow-small);
     max-height:600px;
     overflow-y: auto;
 

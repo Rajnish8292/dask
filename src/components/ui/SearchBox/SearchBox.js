@@ -42,7 +42,11 @@ export default function SearchBox({
       const handleCaret = (characterElem) => {
         if (characterElem) {
           caretElem.style.width = characterElem.offsetWidth + "px";
-          caretElem.style.left = characterElem.offsetLeft + "px";
+          caretElem.style.left =
+            Math.min(
+              editiableElem.offsetLeft + editiableElem.offsetWidth,
+              characterElem.offsetLeft
+            ) + "px";
           caretElem.style.top =
             characterElem.offsetTop + characterElem.offsetHeight + "px";
           caretElem.style.animation = "blink 1s infinite";
@@ -198,16 +202,16 @@ export default function SearchBox({
           error: false,
         });
         try {
-          const request = await fetch(
-            "https://jsonplaceholder.typicode.com/posts",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ query: query }),
-            }
-          );
+          // const request = await fetch(
+          //   "https://jsonplaceholder.typicode.com/posts",
+          //   {
+          //     method: "POST",
+          //     headers: {
+          //       "Content-Type": "application/json",
+          //     },
+          //     body: JSON.stringify({ query: query }),
+          //   }
+          // );
 
           const result = {
             facets: {

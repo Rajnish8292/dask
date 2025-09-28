@@ -1,7 +1,7 @@
 .result_action_container {
     padding: var(--space-medium) var(--space-medium);
     border: var(--border-regular);
-    box-shadow: var(--box-shadow-regular);
+    box-shadow: var(--box-shadow-small);
     margin-top: var(--space-large);
     display: flex;
     justify-content: space-between;

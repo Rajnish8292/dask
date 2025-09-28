@@ -63,7 +63,7 @@
 
 .detail_action_button {
     padding: var(--space-small) var(--space-medium);
-    border: var(--border-regular);
+    border: var(--border-small);
     box-shadow: var(--box-shadow-regular);
     font-size: var(--font-size-small);
     cursor: pointer;

@@ -2,7 +2,7 @@ import "./RecentSearch.css";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoCloseSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
-export default function RecentSearch() {
+export default function RecentSearch({ pasteTextFn }) {
   const [isVisible, setIsVisible] = useState(true);
   const [recentSearches, setRecentSearches] = useState([]);
   useEffect(() => {
@@ -18,11 +18,16 @@ export default function RecentSearch() {
         <div>Recent Searches</div>
         <div
           className="recent_search_toggle"
-          onClick={() => {
+          onClick={(e) => {
             setIsVisible(!isVisible);
           }}
         >
-          <IoIosArrowDown />
+          <IoIosArrowDown
+            style={{
+              transition: "0.25s",
+              transform: isVisible ? "rotate(180deg)" : "rotate(0deg)",
+            }}
+          />
         </div>
       </div>
       <div
@@ -32,7 +37,17 @@ export default function RecentSearch() {
         {recentSearches.length > 0 &&
           recentSearches.map((searchItem, index) => {
             return (
-              <div className="recent_search_item" key={index}>
+              <div
+                className="recent_search_item"
+                key={index}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (typeof pasteTextFn == "function") {
+                    pasteTextFn(searchItem);
+                  }
+                }}
+              >
                 {searchItem}
                 <div
                   className="delete_search"

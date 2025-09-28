@@ -1,5 +1,6 @@
 .result_container {
     margin-top: var(--space-very-large);
+    margin-bottom: calc(var(--space-very-large) + var(--space-medium));
 }
 .problem {
     padding: var(--space-medium);

@@ -42,7 +42,22 @@ export default function ProblemDetailOverlay({
             </div>
           </div>
           <div className="detail_action_container">
-            <div className="detail_action_button detail_solve_button">
+            <div
+              className="detail_action_button detail_solve_button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (window) {
+                  window.open(
+                    `https://leetcode.com/problems/${title
+                      .toLowerCase()
+                      .split(" ")
+                      .join("-")}`,
+                    "_blank"
+                  );
+                }
+              }}
+            >
               Solve this problem
             </div>
             <div
