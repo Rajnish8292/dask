@@ -1,9 +1,8 @@
 "use client";
-
+import React from "react";
 import { useEffect, useState, useRef, useCallback } from "react";
 import gsap from "gsap";
 import "./SearchBox.css";
-import delay from "@/app/utils/delay.mjs";
 
 export default function SearchBox({
   startWithExampleHandler,
