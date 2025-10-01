@@ -1,3 +1,4 @@
+import React from "react";
 import { AnimatePresence } from "motion/react";
 import ProblemDetailOverlay from "../ProblemDetailOverlay/ProblemDetailOverlay";
 import ResultAction from "../ResultAction/ResultAction";
