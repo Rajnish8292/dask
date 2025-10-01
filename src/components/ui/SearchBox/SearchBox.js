@@ -269,7 +269,7 @@ export default function SearchBox({
           //     },
           //   ],
           // };
-          await delay(500);
+          // await delay(500);
           shareSearchRequestData({
             loading: false,
             result: result,
@@ -286,7 +286,7 @@ export default function SearchBox({
             );
           }
         } catch (err) {
-          await delay(500);
+          // await delay(500);
           shareSearchRequestData({
             loading: false,
             result: null,

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React from "react";
 import "./StartExample.css";
 
 export default function StartExample({ pasteTextFn }) {
