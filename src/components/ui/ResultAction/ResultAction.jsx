@@ -1,4 +1,5 @@
 import "./ResultAction.css";
+import React from "react";
 export default function ResultAction({
   noOfResult,
   openStartWithExample,

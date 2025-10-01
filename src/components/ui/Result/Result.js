@@ -6,9 +6,15 @@ import "./Result.css";
 
 import { useCallback, useRef, useState } from "react";
 import BookmarkButton from "../BookmarkButton/BookmarkButton";
-import sort from "@/app/utils/sort.mjs";
 
 import { motion } from "motion/react";
+
+const sort = (arr) => {
+  const difficultyOrder = { Easy: 1, Medium: 2, Hard: 3 };
+  return [...arr].sort((a, b) => {
+    return difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty];
+  });
+};
 
 export default function Result({ resultProblems, openStartWithExample }) {
   const resultContRef = useRef();
