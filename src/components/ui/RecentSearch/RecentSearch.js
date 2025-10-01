@@ -1,4 +1,5 @@
 import "./RecentSearch.css";
+import React from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoCloseSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
@@ -19,6 +20,8 @@ export default function RecentSearch({ pasteTextFn }) {
         <div
           className="recent_search_toggle"
           onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
             setIsVisible(!isVisible);
           }}
         >
